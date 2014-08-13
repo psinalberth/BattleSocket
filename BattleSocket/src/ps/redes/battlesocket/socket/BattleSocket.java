@@ -119,7 +119,7 @@ public class BattleSocket {
                 server.receive(packet);
                 String str = new String(packet.getData());
                 
-                System.out.println(str);
+                System.out.println("Estou recebendo:" + str);
                 
                 int move[] = new int[2];
                 move[0] = Integer.parseInt(str.substring(0, 1));
