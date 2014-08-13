@@ -8,13 +8,8 @@ package ps.redes.battlesocket.view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import ps.redes.battlesocket.socket.BattleSocket;
 
 /**
  *

@@ -24,8 +24,9 @@ public class Handler {
     
     private static final int ACERTOS = 17;
     
-    public Handler() {
+    public Handler(Jogada jogadaP1) {
         
+        this.jogadaP1 = jogadaP1;
     }
     
     public void conectar() throws UnknownHostException, SocketException {
@@ -34,6 +35,10 @@ public class Handler {
     }
     
     public void posicionarBarcos() {
+        
+    }
+    
+    public void catchJogada(Jogada j) {
         
     }
     
@@ -49,9 +54,12 @@ public class Handler {
                 
                 if (isJogando == true) {
                     
+                    socket.write(jogadaP1.getLinha(), jogadaP1.getColuna());
+                    
                 } else {
                     
-                    socket.write(jogadaP1.getLinha(), jogadaP1.getColuna());
+                    //socket.write(jogadaP2.getLinha(), jogadaP2.getColuna());
+                    socket.read();
                 }
             }
         }

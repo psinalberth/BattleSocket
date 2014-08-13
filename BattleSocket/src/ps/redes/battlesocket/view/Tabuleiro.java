@@ -11,12 +11,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 import ps.redes.battlesocket.handler.Handler;
 import ps.redes.battlesocket.model.Jogada;
+import ps.redes.battlesocket.socket.BattleSocket;
 
 /**
  *
@@ -35,7 +40,8 @@ public class Tabuleiro extends JPanel {
     private String titulo;
     
     private Jogada jogada;
-    private Handler handler;
+    
+    private BattleSocket socket;
         
     public Tabuleiro() {
         
@@ -53,18 +59,25 @@ public class Tabuleiro extends JPanel {
     
     public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo) {
         
-        this.linhas = linhas;
-        this.colunas = colunas;
-        this.corJogador = corJogador;
-        this.titulo = titulo;
-        
-        setLayout(new GridLayout(linhas, colunas));
-        setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
-        
-        handler = new Handler();
-        jogada = new Jogada();
-        
-        initComponents();
+        try {
+            this.linhas = linhas;
+            this.colunas = colunas;
+            this.corJogador = corJogador;
+            this.titulo = titulo;
+            
+            setLayout(new GridLayout(linhas, colunas));
+            setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
+            
+            jogada = new Jogada();
+            
+            socket = new BattleSocket();
+            
+            initComponents();
+        } catch (SocketException ex) {
+            Logger.getLogger(Tabuleiro.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Tabuleiro.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void initComponents() {
@@ -124,18 +137,19 @@ public class Tabuleiro extends JPanel {
     
     public void jogar() {
         
+        //jogada.setCoordenada(null);
     }
     
     ActionListener listenerInicializar = new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
-            
-            int x = (int)(((JButton)(e.getSource())).getLocation().getX());
-            int y = (int)(((JButton)(e.getSource())).getLocation().getY());
-            
-            System.out.println(((JButton)(e.getSource())).getLocation().toString() + "AA: " + 
-            ((JButton)(e.getSource())).getBounds().getX());
+                    
             ((JButton)(e.getSource())).setBackground(corJogador);
+            
+            jogada.setCoordenada(((JButton)(e.getSource())).getLocation());
+            socket.write(jogada.getLinha(), jogada.getColuna());
+            
+            System.out.println(jogada.getLinha() + " e " + jogada.getColuna());
         }
     }; 
 }

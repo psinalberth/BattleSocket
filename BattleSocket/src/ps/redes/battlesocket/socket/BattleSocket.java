@@ -90,7 +90,7 @@ public class BattleSocket {
     
     public void write(int linha, int coluna) {
         
-        String str = linha + " " + coluna;
+        String str = String.valueOf(linha) + "  " + String.valueOf(coluna);
         
         DatagramPacket packet = new DatagramPacket(str.getBytes(), str.getBytes().length, socketP2, PORTA);
         
