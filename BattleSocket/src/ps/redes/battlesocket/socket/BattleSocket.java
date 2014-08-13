@@ -41,7 +41,7 @@ public class BattleSocket {
         socketP2 = InetAddress.getByName(IP);
         
         server = new DatagramSocket(PORTA);
-        server.setReceiveBufferSize(32);
+        server.setReceiveBufferSize(64);
         
         DatagramPacket pacote = new DatagramPacket(str.getBytes(), str.getBytes().length, socketP2, PORTA);
         
@@ -122,8 +122,8 @@ public class BattleSocket {
                 System.out.println("Estou recebendo:" + str);
                 
                 int move[] = new int[2];
-                move[0] = Integer.parseInt(str.substring(0, 2).replaceAll("\\s", ""));
-                move[1] = Integer.parseInt(str.substring(4, 6).replaceAll("\\s", ""));
+                move[0] = Integer.parseInt(str.substring(0, 3).replaceAll("\\s", ""));
+                move[1] = Integer.parseInt(str.substring(3, 6).replaceAll("\\s", ""));
                 
                 System.out.println("Adversário jogou: " + move[0] + " e " + move[1]);
                 
