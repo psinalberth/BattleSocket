@@ -123,7 +123,7 @@ public class BattleSocket {
                 
                 int move[] = new int[2];
                 move[0] = Integer.parseInt(str.substring(0, 2).replaceAll("\\s+", ""));
-                move[1] = Integer.parseInt(str.substring(3, 5).replaceAll("\\s+", ""));
+                move[1] = Integer.parseInt(str.substring(4, 6).replaceAll("\\s+", ""));
                 
                 System.out.println("Adversário jogou: " + move[0] + " e " + move[1]);
                 
