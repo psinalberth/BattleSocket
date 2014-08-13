@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import ps.redes.battlesocket.socket.BattleSocket;
 
 /**
  *
@@ -18,6 +19,7 @@ import javax.swing.SwingUtilities;
 public class Frame extends JFrame {
     
     private Tabuleiro tabuleiroP1, tabuleiroP2;
+    private BattleSocket socket;
     
     public Frame() {
         
@@ -29,8 +31,8 @@ public class Frame extends JFrame {
     
     private void initComponents() {
         
-        tabuleiroP1 = new Tabuleiro(11, 11, Color.BLUE, "Você");
-        tabuleiroP2 = new Tabuleiro(11, 11, Color.RED, "Adversário");
+        tabuleiroP1 = new Tabuleiro(11, 11, Color.BLUE, "Você", socket);
+        tabuleiroP2 = new Tabuleiro(11, 11, Color.RED, "Adversário", socket);
         add(tabuleiroP1);
         add(tabuleiroP2);
         

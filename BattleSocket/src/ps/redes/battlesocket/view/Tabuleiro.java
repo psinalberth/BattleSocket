@@ -11,15 +11,10 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import ps.redes.battlesocket.handler.Handler;
 import ps.redes.battlesocket.model.Jogada;
 import ps.redes.battlesocket.socket.BattleSocket;
 
@@ -57,27 +52,19 @@ public class Tabuleiro extends JPanel {
         initComponents();
     }
     
-    public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo) {
+    public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo, BattleSocket socket) {
         
-        try {
-            this.linhas = linhas;
-            this.colunas = colunas;
-            this.corJogador = corJogador;
-            this.titulo = titulo;
-            
-            setLayout(new GridLayout(linhas, colunas));
-            setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
-            
-            jogada = new Jogada();
-            
-            socket = new BattleSocket();
-            
-            initComponents();
-        } catch (SocketException ex) {
-            Logger.getLogger(Tabuleiro.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(Tabuleiro.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.linhas = linhas;
+        this.colunas = colunas;
+        this.corJogador = corJogador;
+        this.titulo = titulo;
+        this.socket = socket;
+        
+        setLayout(new GridLayout(linhas, colunas));
+        setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
+        
+        jogada = new Jogada();
+        initComponents();
     }
     
     private void initComponents() {
