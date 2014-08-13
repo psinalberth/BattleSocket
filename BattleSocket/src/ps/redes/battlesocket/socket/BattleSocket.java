@@ -53,7 +53,7 @@ public class BattleSocket {
             Logger.getLogger(BattleSocket.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        mensagem = new byte[str.length()];
+        mensagem = new byte[7];
         
         DatagramPacket pa = new DatagramPacket(mensagem, mensagem.length);
         
