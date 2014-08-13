@@ -117,7 +117,7 @@ public class BattleSocket {
             try {
                 
                 server.receive(packet);
-                String str = new String(packet.getData());
+                String str = new String(packet.getData(), "UTF-8");
                 
                 System.out.println("Estou recebendo:" + str);
                 
