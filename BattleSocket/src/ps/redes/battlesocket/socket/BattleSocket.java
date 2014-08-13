@@ -121,9 +121,14 @@ public class BattleSocket {
                 
                 System.out.println("Estou recebendo:" + str);
                 
+                String rs[] = new String[2];
+                
+                rs[0] = str.substring(0, 3);
+                rs[1] = str.substring(3, 6);
+                
                 int move[] = new int[2];
-                move[0] = Integer.parseInt(str.substring(0, 3).replaceAll("\\s", ""));
-                move[1] = Integer.parseInt(str.substring(3, 6).replaceAll("\\s", ""));
+                move[0] = Integer.parseInt(rs[0].replaceAll("\\s", ""));
+                move[1] = Integer.parseInt(rs[1].replaceAll("\\s", ""));
                 
                 System.out.println("Adversário jogou: " + move[0] + " e " + move[1]);
                 
