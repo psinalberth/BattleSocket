@@ -8,6 +8,10 @@ package ps.redes.battlesocket.view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.net.SocketException;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import ps.redes.battlesocket.socket.BattleSocket;
@@ -26,6 +30,17 @@ public class Frame extends JFrame {
         setLayout(new FlowLayout());
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        try {
+            
+            socket = new BattleSocket();
+            
+        } catch (SocketException ex) {
+            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownHostException ex) {
+            Logger.getLogger(Frame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         initComponents();
     }
     
