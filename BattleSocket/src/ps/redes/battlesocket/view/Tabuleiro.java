@@ -15,8 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import ps.redes.battlesocket.model.Jogada;
-import ps.redes.battlesocket.socket.BattleSocket;
+
 
 /**
  *
@@ -33,10 +32,6 @@ public class Tabuleiro extends JPanel {
     private JButton[][] buttonGrid;
     private Color corJogador;
     private String titulo;
-    
-    private Jogada jogada;
-    
-    private BattleSocket socket;
         
     public Tabuleiro() {
         
@@ -52,18 +47,16 @@ public class Tabuleiro extends JPanel {
         initComponents();
     }
     
-    public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo, BattleSocket socket) {
+    public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo) {
         
         this.linhas = linhas;
         this.colunas = colunas;
         this.corJogador = corJogador;
         this.titulo = titulo;
-        this.socket = socket;
         
         setLayout(new GridLayout(linhas, colunas));
         setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
         
-        jogada = new Jogada();
         initComponents();
     }
     
@@ -122,21 +115,12 @@ public class Tabuleiro extends JPanel {
         this.titulo = titulo;
     }
     
-    public void jogar() {
-        
-        //jogada.setCoordenada(null);
-    }
-    
     ActionListener listenerInicializar = new ActionListener() {
 
         public void actionPerformed(ActionEvent e) {
                     
             ((JButton)(e.getSource())).setBackground(corJogador);
             
-            jogada.setCoordenada(((JButton)(e.getSource())).getLocation());
-            socket.write(jogada.getLinha(), jogada.getColuna());
-            
-            System.out.println(jogada.getLinha() + " e " + jogada.getColuna());
         }
     }; 
 }
