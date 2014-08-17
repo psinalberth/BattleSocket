@@ -6,6 +6,7 @@
 
 package ps.redes.battlesocket.model;
 
+import java.awt.Point;
 import ps.redes.battlesocket.client.Client;
 
 /**
@@ -15,6 +16,10 @@ import ps.redes.battlesocket.client.Client;
 public class Partida extends Thread {
     
     private Client player1, player2, jogando;
+    
+    public Partida() {
+        
+    }
     
     public Partida(Client player1, Client player2) {
         
@@ -42,7 +47,7 @@ public class Partida extends Thread {
         this.player2 = player2;
     }
     
-    public synchronized boolean jogada(Client player, int coordenadas[]) {
+    public synchronized boolean jogada(Client player, Point coordenadas) {
         
         return false;
     }

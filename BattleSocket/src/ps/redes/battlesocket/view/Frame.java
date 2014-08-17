@@ -66,6 +66,7 @@ public class Frame extends JFrame {
             
             while (true) {
                 
+                writer.println();
             }
             
         } catch (IOException ex) {

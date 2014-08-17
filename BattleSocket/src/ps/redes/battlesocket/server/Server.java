@@ -12,12 +12,14 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import ps.redes.battlesocket.model.Partida;
+import ps.redes.battlesocket.view.Frame;
 
 /**
  * Classe servidor para a aplicação 'BattleSocket', Java utilizando sockets  
  * @author Inalberth
  */
-public class Server extends Thread {
+public class Server implements Runnable {
      
     public static final int PORT = 2014;
     private static int connectionCount;
@@ -73,14 +75,18 @@ public class Server extends Thread {
             
             System.out.println("Conectando-se a " + str);
             
+            while (true) {
+                
+                str = reader.readLine();
+                System.out.println("Mensagem > " + str);
+            }
+            
         } catch (IOException ex) {
             
             System.err.println(ex.getMessage());
         }
     }
-    
- 
-    
+      
     public static void main(String [] args) {
         
         ServerSocket server;
@@ -96,29 +102,32 @@ public class Server extends Thread {
                 
                 Socket home = server.accept();
                 
-                connectionCount += 1;
-                
-                Server.setConnectionCount(connectionCount);
-                
-                System.out.println("Conexões: " + Server.getConnectionCount());
-                System.out.print("SERVER: ");
-                
-                if (getConnectionCount() < 2) {
-                    
-                    System.out.println("Não há jogadores suficientes para iniciar a partida");
-                    
-                } else {
-                    
-                    System.out.println("Iniciando partida...");
-                }
-               
-                Thread thread = new Server(home);
+//                connectionCount += 1;
+//                
+//                Server.setConnectionCount(connectionCount);
+//                
+//                System.out.println("Conexões: " + Server.getConnectionCount());
+//                System.out.print("SERVER: ");
+//                
+//                if (getConnectionCount() < 2) {
+//                    
+//                    System.out.println("Não há jogadores suficientes para iniciar a partida");
+//                    
+//                } else {
+//                    
+//                    System.out.println("Iniciando partida...");
+//                }
+                Runnable runner = new Server(home);
+                Thread thread = new Thread(runner);
                 thread.start();
             }
             
         } catch (IOException ex) {
             
             System.err.println(ex.getMessage());
+            
+        } finally {
+            
         }
     }
 }

@@ -15,7 +15,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
-import ps.redes.battlesocket.client.Client;
 
 
 /**
@@ -34,13 +33,20 @@ public class Tabuleiro extends JPanel {
     private Color corJogador;
     private String titulo;
     
-    private Client player;
-        
+    /**
+     * Construtor da classe
+     */
     public Tabuleiro() {
         
         initComponents();
     }
     
+    /**
+     * Construtor da classe
+     * 
+     * @param linhas Quantidade de linhas do tabuleiro
+     * @param colunas Quantidade de colunas do tabuleiro
+     */
     public Tabuleiro(int linhas, int colunas) {
         
         this.linhas = linhas;
@@ -49,6 +55,14 @@ public class Tabuleiro extends JPanel {
         initComponents();
     }
     
+    /**
+     * Construtor da classe
+     * 
+     * @param linhas Quantidade de linhas do tabuleiro
+     * @param colunas Quantidade de colunas do tabuleiro
+     * @param corJogador Cor que identificará o jogador no tabuleiro
+     * @param titulo Título identificador do tabuleiro
+     */
     public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo) {
         
         this.linhas = linhas;
@@ -101,6 +115,11 @@ public class Tabuleiro extends JPanel {
                 buttonGrid[0][0].setVisible(false);
             }
         }
+    }
+    
+    public void jogada(int linha, int coluna) {
+        
+        buttonGrid[linha][coluna].setBackground(Color.red);
     }
     
     /**
