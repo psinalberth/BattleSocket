@@ -15,6 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
+import ps.redes.battlesocket.client.Client;
 
 
 /**
@@ -32,12 +33,13 @@ public class Tabuleiro extends JPanel {
     private JButton[][] buttonGrid;
     private Color corJogador;
     private String titulo;
+    
+    private Client player;
         
     public Tabuleiro() {
         
         initComponents();
     }
-    
     
     public Tabuleiro(int linhas, int colunas) {
         
@@ -60,33 +62,55 @@ public class Tabuleiro extends JPanel {
         initComponents();
     }
     
+    /**
+     * Método inicializador de componentes: O tabuleiro é inicializado com a quantidade de linhas de colunas
+     * passado como referência na criação de uma nova instância da classe Tabuleiro.
+     */
     private void initComponents() {
+        
+        int cont = 64;
+        int contNum = 0;
         
         buttonGrid = new JButton[linhas][colunas];
         
         for (int i = 0; i < getLinhas(); i++) {
             for (int j = 0; j < getColunas(); j++) {
-              
+                
                 buttonGrid[i][j] = new JButton();
                 buttonGrid[i][j].setMinimumSize(Tabuleiro.DIMENSION);
                 buttonGrid[i][j].setPreferredSize(Tabuleiro.DIMENSION);
                 buttonGrid[i][j].setMaximumSize(Tabuleiro.DIMENSION);
                 buttonGrid[i][j].addActionListener(listenerInicializar);
                 
+                if (i == 0 && j != i) {
+                    
+                    cont += 1;
+                    buttonGrid[i][j].setText(String.valueOf((char)cont));
+                    buttonGrid[i][j].setEnabled(false);
+                }
+                
+                if (j == 0 && i != j) {
+                    
+                    contNum += 1;
+                    buttonGrid[i][j].setText(new String().valueOf(contNum));
+                    buttonGrid[i][j].setEnabled(false);
+                }
+                
                 add(buttonGrid[i][j]);
+                
+                buttonGrid[0][0].setVisible(false);
             }
         }
     }
     
-    public void jogada(int linha, int coluna) {
-        
-        buttonGrid[linha][coluna].setBackground(Color.red);
-    }
-
+    /**
+     * Retorna a quantidade de linhas do Tabuleiro.
+     * @return Quantidade de linha do tabuleiro.
+     */
     public int getLinhas() {
         return linhas;
     }
-
+    
     public void setLinhas(int linhas) {
         this.linhas = linhas;
     }
@@ -120,7 +144,7 @@ public class Tabuleiro extends JPanel {
         public void actionPerformed(ActionEvent e) {
                     
             ((JButton)(e.getSource())).setBackground(corJogador);
-            
+            System.out.println(((JButton)(e.getSource())).getLocation().toString());
         }
     }; 
 }

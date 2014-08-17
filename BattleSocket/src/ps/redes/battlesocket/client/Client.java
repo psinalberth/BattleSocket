@@ -37,7 +37,7 @@ public class Client extends Thread {
         
         try {
             
-            Socket socket = new Socket("192.168.6.101", Server.getPort());
+            Socket socket = new Socket("192.168.6.102", Server.PORT);
             
             PrintStream writer = new PrintStream(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
