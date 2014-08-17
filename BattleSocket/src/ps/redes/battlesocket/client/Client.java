@@ -6,17 +6,26 @@
 
 package ps.redes.battlesocket.client;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 import ps.redes.battlesocket.server.Server;
 
 /**
- *
+ * Classe cliente que da aplicação BattleSocket, utilizada para conectar 
+ * e enviar requisições ao Servidor da aplicação
+ * 
  * @author Inalberth
  */
 public class Client implements Runnable {
@@ -28,10 +37,13 @@ public class Client implements Runnable {
         this.socket = socket;
     }
     
-    @Override
+    /**
+     * Sobrecaraga de Runnable
+     */
     public void run() {
         
         try {
+            
             PrintStream writer = new PrintStream(socket.getOutputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             
@@ -44,13 +56,87 @@ public class Client implements Runnable {
                 str = reader.readLine();
                 writer.println("MESSAGE > " + str);
             }
+            
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+            
+            System.err.println(ex.getMessage());
         }
-            
-            
     }
     
+    /**
+     * JFrame utilizado para interagir com usuário do jogo
+     * 
+     * @author Inalberth
+     * 
+     */
+    class BattleSocket extends JFrame {
+        
+        /**
+         * Construtor da classe
+         */
+        public BattleSocket() {
+            
+            this.setLayout(new FlowLayout(FlowLayout.CENTER));
+            this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            initComponents();
+        }
+        
+        /**
+         * Método inicializador de componentes: 
+         */
+        private void initComponents() {
+            
+        }
+    }
+    
+    class Tabuleiro extends JPanel {
+        
+        private int linhas;
+        private int colunas;
+    
+        private static final int BUTTON_SIZE = 50;
+        private final Dimension DIMENSION = new Dimension(BUTTON_SIZE, BUTTON_SIZE);
+    
+        private JButton[][] buttonGrid;
+        private Color corJogador;
+        private String titulo;
+        
+        public Tabuleiro() {
+            
+        }
+        
+        /**
+        * Construtor da classe
+        * 
+        * @param linhas Quantidade de linhas do tabuleiro
+        * @param colunas Quantidade de colunas do tabuleiro
+        * @param corJogador Cor que identificará o jogador no tabuleiro
+        * @param titulo Título identificador do tabuleiro
+        */
+       public Tabuleiro(int linhas, int colunas, Color corJogador, String titulo) {
+
+           this.linhas = linhas;
+           this.colunas = colunas;
+           this.corJogador = corJogador;
+           this.titulo = titulo;
+
+           setLayout(new GridLayout(linhas, colunas));
+           setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
+
+           initComponents();
+       }
+       
+       private void initComponents() {
+           
+       }
+    }
+    
+    /**
+     * Método principal da classe 'Client': utilizado para criar uma nova instância cliente
+     * @param args 
+     */
     public static void main(String [] args) {
         
         try {
@@ -59,11 +145,11 @@ public class Client implements Runnable {
             
             Runnable runner = new Client(socket);
             Thread th = new Thread(runner);
-            th.start();
+            th.start();            
             
         } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
+            
+            System.err.println(ex.getMessage());
+        } 
     }
 }

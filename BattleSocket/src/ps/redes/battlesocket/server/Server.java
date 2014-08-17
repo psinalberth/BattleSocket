@@ -12,8 +12,6 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import ps.redes.battlesocket.model.Partida;
-import ps.redes.battlesocket.view.Frame;
 
 /**
  * Classe servidor para a aplicação 'BattleSocket', Java utilizando sockets  

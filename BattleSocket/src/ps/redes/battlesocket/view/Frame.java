@@ -8,17 +8,7 @@ package ps.redes.battlesocket.view;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
-import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-import ps.redes.battlesocket.client.Client;
-import ps.redes.battlesocket.server.Server;
 
 /**
  *
@@ -48,29 +38,6 @@ public class Frame extends JFrame {
     
     public static void main(String [] args) {
         
-        try {
-            
-            Socket socket = new Socket("192.168.6.102", Server.PORT);
-            
-            PrintStream writer = new PrintStream(socket.getOutputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            
-            String str = reader.readLine();
-            
-            writer.println(str);
-            
-            Thread th = new Client(socket);
-            th.start();
-            
-            new Frame().setVisible(true);
-            
-            while (true) {
-                
-                writer.println();
-            }
-            
-        } catch (IOException ex) {
-            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+        new Frame().setVisible(true);
     }
 }
