@@ -38,7 +38,7 @@ public class BattleSocketServer implements Runnable {
     }
     
     public void sendToClient(PrintStream write, String message) {
-        //out:
+
         for (Map.Entry<String, PrintStream> client : clients.entrySet()) {
             
             PrintStream temp = client.getValue();
@@ -46,7 +46,6 @@ public class BattleSocketServer implements Runnable {
             if (temp != write) {
                 System.out.println(client.getKey() + client.getValue());
                 temp.println(message);
-                //break out;
             }
         }
     }
