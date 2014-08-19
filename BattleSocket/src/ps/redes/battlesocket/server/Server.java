@@ -6,12 +6,16 @@
 
 package ps.redes.battlesocket.server;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import ps.redes.battlesocket.client.Client;
 
 /**
  * Classe servidor para a aplicação 'BattleSocket', Java utilizando sockets  
@@ -22,6 +26,7 @@ public class Server implements Runnable {
     public static final int PORT = 2014;
     private static int connectionCount;
     private Socket socket;
+    private int r[];
     
     /**
      * Construtor da classe Server.
@@ -60,23 +65,53 @@ public class Server implements Runnable {
     }
     
     /**
+     * Recebe uma String do cliente na forma x-y e retorna as coordenadas em que o cliente jogou no tabuleiro
+     * 
+     * @param reader Mensagem enviada pelo cliente
+     * @return Coordenadas X e Y do tabuleiro
+     */
+    public int[] converteEmCoordenadas(String reader) {
+        
+        String[] temp = reader.split("-");
+        
+        int coordenadas[] = new int[2];
+        
+        coordenadas[0] = Integer.parseInt(temp[0]);
+        coordenadas[1] = Integer.parseInt(temp[1]);
+        
+        return coordenadas;
+    }
+    
+    public String converteEmString(Point coordenadas) {
+        
+        String string = String.valueOf(coordenadas.x + "-" + coordenadas.y);
+        
+        return string;
+    }
+    
+    /**
      * Sobrecarga de Runnable
      */
     public void run() {
-          
+        
+        String str = null;
+        
         try {
             
             BufferedReader reader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             PrintStream write = new PrintStream(this.socket.getOutputStream());
             
-            String str = reader.readLine();
-            
-            System.out.println("Conectando-se a " + str);
-            
             while (true) {
                 
                 str = reader.readLine();
-                System.out.println("Mensagem > " + str);
+                
+                if (str != null) {
+                
+                r = converteEmCoordenadas(str);
+                write.println(str);
+                System.out.println("Mensagem > " + String.valueOf(r[0]) + " e " + String.valueOf(r[1]));
+                
+                }
             }
             
         } catch (IOException ex) {
@@ -99,6 +134,30 @@ public class Server implements Runnable {
             while (true) {
                 
                 Socket home = server.accept();
+                
+                Client player1, player2;
+                Runnable runner1, runner2;
+                
+                Partida partida = new Partida();
+                
+                player1 = new Client(home);
+                player2 = new Client(home);
+                
+                runner1 = player1;
+                runner2 = player2;
+                
+                Thread p1 = new Thread(runner1);
+                Thread p2 = new Thread(runner2);
+                
+                partida.setPlayerUm(player1);
+                partida.setPlayerDois(player2);
+                partida.setAtual(player1);
+                
+                p1.start();
+                p2.start();
+
+                
+                
                 
 //                connectionCount += 1;
 //                
@@ -125,6 +184,83 @@ public class Server implements Runnable {
             System.err.println(ex.getMessage());
             
         } finally {
+            
+        }
+    }
+}
+
+class Partida implements Runnable {
+    
+    private Client player1, player2, jogando;
+    private static final int ACERTOS = 17;
+    
+    public Partida() {
+        
+    }
+
+    public Partida(Client player1, Client player2) {
+    
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+    
+    public Client getPlayerUm() {
+        
+        return player1;
+    }
+    
+    public Client getPlayerDois() {
+        
+        return player2;
+    }
+    
+    public void setPlayerUm(Client player1) {
+        
+        this.player1 = player1;
+    }
+    
+    public void setPlayerDois(Client player2) {
+        
+        this.player2 = player2;
+    }
+    
+    public void setAtual(Client jogando) {
+        
+        this.jogando = jogando;
+    }
+    
+    public void enviarJogada(Client player) throws IOException {
+        
+        player.receberMovimento();
+    }
+
+    /**
+     * Sobrecarga de Runnable
+     */
+    public void run() {
+        
+        if (player1.getAcertos() == ACERTOS ) {
+            
+        } else if (player1.getAcertos() == ACERTOS) {
+            
+        } else {
+            
+            if (jogando == player1) {
+                
+                try {
+                    enviarJogada(player2);
+                } catch (IOException ex) {
+                    Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            } else {
+                
+                try {
+                    enviarJogada(player1);
+                } catch (IOException ex) {
+                    Logger.getLogger(Partida.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             
         }
     }

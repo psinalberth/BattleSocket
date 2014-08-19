@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
@@ -33,10 +34,39 @@ import ps.redes.battlesocket.server.Server;
 public class Client implements Runnable {
     
     private Socket socket;
+    private static PrintStream writer;
+    private static BufferedReader reader;
+    
+    private int acertos;
     
     public Client(Socket socket) {
         
         this.socket = socket;
+    }
+    
+    public int getAcertos() {
+        
+        return acertos;
+    }
+    
+    public void setAcertos(int acertos) {
+        
+        this.acertos = acertos;
+    }
+    
+    /**
+     * Realiza uma nova jogada
+     * @param coordenadas Coordenadas em que o jogador jogou
+     */
+    public static void fazerMovimento(Point coordenadas) {
+        
+        writer.println(String.valueOf(coordenadas.x + "-" + coordenadas.y));
+    }
+    
+    public int[] receberMovimento() throws IOException {
+        
+        reader.readLine();
+        return null;
     }
     
     /**
@@ -46,23 +76,28 @@ public class Client implements Runnable {
         
         try {
             
-            PrintStream writer = new PrintStream(socket.getOutputStream());
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+           writer = new PrintStream(socket.getOutputStream());
+           reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             
             String str = reader.readLine();
             
+            System.out.println(str);
             writer.println(str);
-            
-            while (true) {
-                
-                str = reader.readLine();
-                writer.println("MESSAGE > " + str);
-            }
             
         } catch (IOException ex) {
             
             System.err.println(ex.getMessage());
         }
+    }
+    
+    public static PrintStream getWriter() {
+        
+        return writer;
+    }
+    
+    public static BufferedReader getReader() {
+        
+        return reader;
     }
     
     /**
@@ -74,6 +109,8 @@ public class Client implements Runnable {
        try {
 
            Socket socket = new Socket("192.168.6.102", Server.PORT);
+           
+           
 
            Runnable runner = new Client(socket);
            Thread th = new Thread(runner);
@@ -132,7 +169,6 @@ class BattleSocket extends JFrame {
 
         private JButton[][] buttonGrid;
         private Color corJogador;
-        private String titulo;
 
         public Tabuleiro() {
 
@@ -147,7 +183,6 @@ class BattleSocket extends JFrame {
        public Tabuleiro(Color corJogador, String titulo) {
 
            this.corJogador = corJogador;
-           this.titulo = titulo;
 
            setLayout(new GridLayout(Tabuleiro.TAMANHO, Tabuleiro.TAMANHO));
            setBorder(new TitledBorder(BorderFactory.createEmptyBorder(), titulo.toUpperCase()));
@@ -201,6 +236,8 @@ class BattleSocket extends JFrame {
             public void actionPerformed(ActionEvent e) {
 
                 ((JButton)(e.getSource())).setBackground(corJogador);
+                //Client.getWriter().println(((JButton)(e.getSource())).getLocation().toString());
+                Client.fazerMovimento(((JButton)(e.getSource())).getLocation());
             }
         };
     }
