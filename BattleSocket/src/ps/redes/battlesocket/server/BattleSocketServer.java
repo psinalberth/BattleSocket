@@ -127,8 +127,29 @@ class Handler {
     
     BattleSocketClient player1, player2;
     
-    public Handler() {
+    public Handler(BattleSocketClient player1, BattleSocketClient player2) {
         
+        this.player1 = player1;
+        this.player2 = player2;
+    }
+    
+    public void setPlayerOne(BattleSocketClient player1) {
         
+        this.player1 = player1;
+    }
+    
+    public void setPlayerTwo(BattleSocketClient player2) {
+        
+        this.player2 = player2;
+    }
+    
+    public BattleSocketClient getPlayerOne() {
+        
+        return player1;
+    }
+    
+    public BattleSocketClient getPlayerTwo() {
+        
+        return player2;
     }
 }
